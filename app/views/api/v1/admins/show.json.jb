@@ -1,0 +1,9 @@
+json = {
+  data: {
+    id: @admin.id
+    name: @admin.name
+    email: @admin.email
+  }
+}
+
+json
