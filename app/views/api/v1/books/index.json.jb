@@ -1,0 +1,8 @@
+@api_v1_books.map do |api_v1_book|
+  {
+    id: api_v1_book.id,
+    first_name: api_v1_book.first_name,
+    last_name: api_v1_book.last_name,
+    url: api_v1_book_url(api_v1_book, format: :json)
+  }
+end
