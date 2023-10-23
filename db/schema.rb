@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_23_133619) do
+ActiveRecord::Schema.define(version: 2023_04_03_081916) do
 
   create_table "absences", force: :cascade do |t|
     t.integer "status", default: 0
@@ -31,13 +31,6 @@ ActiveRecord::Schema.define(version: 2023_10_23_133619) do
     t.datetime "remember_created_at"
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
-  end
-
-  create_table "api_v1_books", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "employees", force: :cascade do |t|
