@@ -28,7 +28,6 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'jb'
 gem "devise"
 gem "devise_token_auth"
-gem "omniauth"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
