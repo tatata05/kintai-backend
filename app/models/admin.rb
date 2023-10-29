@@ -1,9 +1,9 @@
 class Admin < ApplicationRecord
   # Include default devise modules.
-  # :omniauthable, :confirmable
+  # :omniauthable, :confirmable :trackable
   devise :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :trackable, :validatable
+          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  validates :password_confirmation, presence: true
+  validates :password, confirmation: true
 end

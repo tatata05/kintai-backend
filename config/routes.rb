@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api, defaults: {format: "json"} do
     namespace :v1 do
-      resources :admins
+      resources :admins do
+        collection do
+          get :current_admin
+        end
+      end
 
       mount_devise_token_auth_for 'Admin', at: 'admin_auth', controllers: {
         registrations: "api/v1/admin_auth/registrations"
