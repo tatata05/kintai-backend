@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_26_104303) do
+ActiveRecord::Schema.define(version: 2023_11_06_064804) do
 
   create_table "absences", force: :cascade do |t|
     t.integer "status", default: 0
