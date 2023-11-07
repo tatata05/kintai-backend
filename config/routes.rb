@@ -9,6 +9,7 @@ Rails.application.routes.draw do
             get :current_admin
           end
         end
+        resources :employees
       end
 
       mount_devise_token_auth_for 'Admin', at: 'admin_auth', controllers: {
