@@ -4,12 +4,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :admin do
         resources :absences, only: %i[show update]
-        resources :admins do
+        resources :admins, only: %i[index show] do
           collection do
             get :current_admin
           end
         end
-        resources :employees
+        resources :employees, only: %i[index show]
       end
 
       mount_devise_token_auth_for 'Admin', at: 'admin_auth', controllers: {
