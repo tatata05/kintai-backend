@@ -14,11 +14,9 @@ class Api::V1::Admin::AbsencesController < ApplicationController
         Notification.create!(employee_id: @absence.shift.employee.id, absence_id: @absence.id, kind: "rejected")
       end
     end
-    flash[:success] = "更新しました"
-    redirect_to admin_shifts_path
-  rescue
-    flash[:danger] = "更新に失敗しました"
-    redirect_to admin_shifts_path
+    render status: 204, json: "success"
+  rescue => e
+    render status: 400, json: e.message
   end
 
   private
