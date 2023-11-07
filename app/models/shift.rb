@@ -8,4 +8,8 @@ class Shift < ApplicationRecord
   validate :start_end_check
 
   enum status: { unapproved: 0, approved: 1, rejected: 2 }
+
+  def start_end_check
+    errors.add("end_time", "を開始時間より後にしてください。") if self.start_time >= self.end_time
+  end
 end
