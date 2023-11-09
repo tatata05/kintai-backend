@@ -10,6 +10,7 @@ Rails.application.routes.draw do
           end
         end
         resources :employees, only: %i[index show]
+        resources :shifts, only: %i[index show]
       end
 
       mount_devise_token_auth_for 'Admin', at: 'admin_auth', controllers: {

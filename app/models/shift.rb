@@ -12,4 +12,12 @@ class Shift < ApplicationRecord
   def start_end_check
     errors.add("end_time", "を開始時間より後にしてください。") if self.start_time >= self.end_time
   end
+
+  def check_status
+    if absence.present? && absence.status == "unapproved"
+      return "absenceApplication"
+    else
+      return status
+    end
+  end
 end
