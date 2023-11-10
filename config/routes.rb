@@ -10,6 +10,7 @@ Rails.application.routes.draw do
           end
         end
         resources :employees, only: %i[index show]
+        resources :notifications, only: %i[index update]
         resources :shifts, only: %i[index show update]
       end
 
