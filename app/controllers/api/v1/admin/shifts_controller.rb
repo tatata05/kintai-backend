@@ -3,9 +3,9 @@ class Api::V1::Admin::ShiftsController < ApplicationController
     @shifts = Shift.eager_load(:employee, :absence).where(status: ["approved", "unapproved"])
   end
 
-  # def show
-  #   @shift = Shift.find_by(id: params[:id])
-  # end
+  def show
+    @shift = Shift.eager_load(:employee).find_by(id: params[:id])
+  end
 
   # def update
   #   ActiveRecord::Base.transaction do

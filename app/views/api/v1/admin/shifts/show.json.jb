@@ -1,0 +1,12 @@
+json = {
+  id: @shift.id,
+  startTime: @shift.start_time,
+  endTime: @shift.end_time,
+  status: @shift.check_status,
+  employee: {
+    id: @shift.employee.id,
+    name: @shift.employee.name
+  }
+}
+
+json
