@@ -1,11 +1,13 @@
 class Api::V1::Admin::AbsencesController < ApplicationController
+  # before_action :authenticate_admin!
+
   def show
-    @absence = Absence.find_by(id: params[:id])
+    @absence = Absence.find(params[:id])
   end
 
   def update
     ActiveRecord::Base.transaction do
-      @absence = Absence.find_by(id: params[:id])
+      @absence = Absence.find(params[:id])
       @absence.update!(absence_params)
       case @absence.status
       when "approved"

@@ -1,4 +1,6 @@
 class Api::V1::Admin::NotificationsController < ApplicationController
+  # before_action :authenticate_admin!
+
   def index
     notifications = Notification.where(kind: ["application", "approval_pending", "unapplied"])
     notifications = notifications.where(read: true) if params[:read] == "true"
@@ -7,7 +9,7 @@ class Api::V1::Admin::NotificationsController < ApplicationController
   end
 
   def update
-    notification = Notification.find_by(id: params[:id])
+    notification = Notification.find(params[:id])
     notification.update(read: true) if notification.read == false
     render status: 204, json: "success"
   end

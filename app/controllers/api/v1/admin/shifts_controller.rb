@@ -1,15 +1,17 @@
 class Api::V1::Admin::ShiftsController < ApplicationController
+  # before_action :authenticate_admin!
+
   def index
     @shifts = Shift.eager_load(:employee, :absence).where(status: ["approved", "unapproved"])
   end
 
   def show
-    @shift = Shift.eager_load(:employee).find_by(id: params[:id])
+    @shift = Shift.eager_load(:employee).find(params[:id])
   end
 
   def update
     ActiveRecord::Base.transaction do
-      @shift = Shift.find_by(id: params[:id])
+      @shift = Shift.find(params[:id])
       @shift.update!(shift_params)
       case @shift.status
       when "approved"
@@ -19,8 +21,6 @@ class Api::V1::Admin::ShiftsController < ApplicationController
       end
     end
     render status: 204, json: "success"
-  rescue => e
-    render status: 400, json: e.message
   end
 
   private
