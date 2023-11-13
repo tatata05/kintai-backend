@@ -19,6 +19,9 @@ Rails.application.routes.draw do
         resources :notifications, only: %i[index update]
         resources :shifts, only: %i[index show update]
       end
+      namespace :employee do
+        resources :absences, only: %i[new]
+      end
     end
   end
 end

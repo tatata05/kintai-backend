@@ -1,0 +1,11 @@
+json = {}
+
+json[:data] = @shifts.map do |shift|
+  {
+    id: shift.id,
+    startTime: shift.start_time,
+    endTime: shift.end_time,
+  }
+end
+
+json
