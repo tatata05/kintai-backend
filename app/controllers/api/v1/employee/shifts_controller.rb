@@ -6,28 +6,27 @@ class Api::V1::Employee::ShiftsController < ApplicationController
     @shifts = current_employee.shifts.eager_load(:absence).where(absence: {status: ["unapproved", "rejected"]}, status: ["approved", "unapproved"]).or(current_employee.shifts.where(absence: {id: nil}, status: ["approved", "unapproved"]))
   end
 
-  # def new
-  #   @shift = current_employee.shifts.build
-  # end
+  def create
+    ActiveRecord::Base.transaction do
+      @shift = current_employee.shifts.build(shift_params)
+      notification = Notification.find_by(employee_id: current_employee.id, kind: "unapplied")
 
-  # def create
-  #   ActiveRecord::Base.transaction do
-  #     @shift = current_employee.shifts.build(shift_params)
-  #     notification = Notification.find_by(employee_id: current_employee.id, kind: "unapplied")
-  #     notification.destroy if notification.present? #シフト未申請通知があった場合に、シフトを申請したらその通知を削除する
-  #     if overlapping_time?
-  #       flash.now[:danger] = "その時間帯はすでにシフトを申請しています"
-  #       return render "new"
-  #     end
-  #     @shift.save! # overlapping_time?で重複チェックを行う必要があるため、create!ではなくbuild+save!
-  #     Notification.create!(employee_id: current_employee.id, shift_id: @shift.id, kind: "application")
-  #     flash[:success] = "シフトを申請しました"
-  #   end
-  #   redirect_to new_employee_shift_path
-  # rescue
-  #   flash.now[:danger] = "シフト申請に失敗しました"
-  #   render "new"
-  # end
+      #シフト未申請通知があった場合に、シフトを申請したらその通知を削除する
+      notification.destroy! if notification.present?
+
+      # 同じ従業員から同じ時間でのシフト申請が行われた時は、例外を発生させる。
+      if overlapping_time?
+        raise StandardError.new("その時間帯はすでにシフトを申請しています")
+      end
+
+      @shift.save!
+      Notification.create!(employee_id: current_employee.id, shift_id: @shift.id, kind: "application")
+    end
+    render status: 201, json: "success"
+  rescue => e
+    # エラーハンドリングをうまくできれば、ここでのrescueは必要ないかも
+    render status: 400, json: e.message
+  end
 
   # def show
   #   @shift = Shift.find_by(id: params[:id])
@@ -58,9 +57,9 @@ class Api::V1::Employee::ShiftsController < ApplicationController
 
   private
 
-  # def shift_params
-  #   params.require(:shift).permit(:start_time, :end_time, :status)
-  # end
+  def shift_params
+    params.require(:shift).permit(:start_time, :end_time, :status)
+  end
 
   # def correct_employee
   #   @shift = Shift.find_by(id: params[:id])
@@ -70,7 +69,7 @@ class Api::V1::Employee::ShiftsController < ApplicationController
   #   redirect_to employee_shifts_path
   # end
 
-  # def overlapping_time?
-  #   current_employee.shifts.where('end_time > ? and ? > start_time', @shift.start_time, @shift.end_time).exists?
-  # end
+  def overlapping_time?
+    current_employee.shifts.where('end_time > ? and ? > start_time', @shift.start_time, @shift.end_time).exists?
+  end
 end
