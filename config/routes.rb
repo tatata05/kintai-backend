@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       end
       namespace :employee do
         resources :absences, only: %i[new create show destroy]
+        resources :notifications, only: %i[index]
         resource :mypage, only: %i[show]
       end
     end
