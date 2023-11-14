@@ -20,7 +20,7 @@ Rails.application.routes.draw do
         resources :shifts, only: %i[index show update]
       end
       namespace :employee do
-        resources :absences, only: %i[new create show]
+        resources :absences, only: %i[new create show destroy]
       end
     end
   end

@@ -22,11 +22,9 @@ class Api::V1::Employee::AbsencesController < ApplicationController
   def show
   end
 
-  # def destroy
-  #   @absence.destroy
-  #   flash[:success] = "欠勤申請を削除しました"
-  #   redirect_to employee_shifts_path
-  # end
+  def destroy
+    @absence.destroy!
+  end
 
   private
 
