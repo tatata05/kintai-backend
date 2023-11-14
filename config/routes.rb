@@ -23,7 +23,7 @@ Rails.application.routes.draw do
         resources :absences, only: %i[new create show destroy]
         resource :mypage, only: %i[show]
         resources :notifications, only: %i[index update]
-        resources :shifts, only: %i[index create]
+        resources :shifts, only: %i[index create show]
       end
     end
   end

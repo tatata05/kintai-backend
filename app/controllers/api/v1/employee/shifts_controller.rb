@@ -1,6 +1,6 @@
 class Api::V1::Employee::ShiftsController < ApplicationController
   before_action :authenticate_employee!
-  # before_action :correct_employee, only: [:edit, :update, :destroy]
+  before_action :correct_employee, only: %i[show update destroy]
 
   def index
     @shifts = current_employee.shifts.eager_load(:absence).where(absence: {status: ["unapproved", "rejected"]}, status: ["approved", "unapproved"]).or(current_employee.shifts.where(absence: {id: nil}, status: ["approved", "unapproved"]))
@@ -28,12 +28,8 @@ class Api::V1::Employee::ShiftsController < ApplicationController
     render status: 400, json: e.message
   end
 
-  # def show
-  #   @shift = Shift.find_by(id: params[:id])
-  # end
-
-  # def edit
-  # end
+  def show
+  end
 
   # def update
   #   @shift.assign_attributes(shift_params)
@@ -61,13 +57,13 @@ class Api::V1::Employee::ShiftsController < ApplicationController
     params.require(:shift).permit(:start_time, :end_time, :status)
   end
 
-  # def correct_employee
-  #   @shift = Shift.find_by(id: params[:id])
-  #   return if @shift.employee_id == current_employee.id
+  def correct_employee
+    @shift = Shift.find(params[:id])
+    return if @shift.employee_id == current_employee.id
 
-  #   flash[:danger] = "権限がありません"
-  #   redirect_to employee_shifts_path
-  # end
+    # エラーハンドリング適切にする
+    render status: 403, json: "権限がありません"
+  end
 
   def overlapping_time?
     current_employee.shifts.where('end_time > ? and ? > start_time', @shift.start_time, @shift.end_time).exists?
