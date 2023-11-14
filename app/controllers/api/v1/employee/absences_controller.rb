@@ -8,17 +8,16 @@ class Api::V1::Employee::AbsencesController < ApplicationController
     @shifts = current_employee.shifts.left_outer_joins(:absence).where(absence: { id: nil }, status: "approved")
   end
 
-  # def create
-  #   ActiveRecord::Base.transaction do
-  #     @absence = Absence.create!(absence_params)
-  #     Notification.create!(employee_id: current_employee.id, absence_id: @absence.id, kind: "application")
-  #     flash[:success] = "欠勤申請をしました"
-  #   end
-  #   redirect_to new_employee_absence_path
-  # rescue
-  #   flash.now[:danger] = "欠勤申請に失敗しました"
-  #   render "new"
-  # end
+  def create
+    ActiveRecord::Base.transaction do
+      @absence = Absence.create!(absence_params)
+      Notification.create!(employee_id: current_employee.id, absence_id: @absence.id, kind: "application")
+    end
+    render status: 204, json: "success"
+  rescue => e
+    # エラーハンドリングをうまくできれば、ここでのrescueは必要ないかも
+    render status: 400, json: e.message
+  end
 
   # def show
   # end
@@ -31,9 +30,9 @@ class Api::V1::Employee::AbsencesController < ApplicationController
 
   private
 
-  # def absence_params
-  #   params.require(:absence).permit(:shift_id, :status)
-  # end
+  def absence_params
+    params.require(:absence).permit(:shift_id)
+  end
 
   # def correct_employee
   #   @absence = Absence.find_by(id: params[:id])
