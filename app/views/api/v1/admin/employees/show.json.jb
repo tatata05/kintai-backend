@@ -1,12 +1,14 @@
 json = {
-  id: @employee.id,
-  name: @employee.name,
-  email: @employee.email,
-  gender: @employee.gender,
-  age: @employee.age,
-  address: @employee.address,
-  phoneNumber: @employee.phone_number,
-  emergencyPhoneNumber: @employee.emergency_phone_number,
+  data: {
+    id: @employee.id,
+    name: @employee.name,
+    email: @employee.email,
+    gender: @employee.gender,
+    age: @employee.age,
+    address: @employee.address,
+    phoneNumber: @employee.phone_number,
+    emergencyPhoneNumber: @employee.emergency_phone_number,
+  }
 }
 
 json
