@@ -2,7 +2,7 @@ class Api::V1::Admin::ShiftsController < ApplicationController
   # before_action :authenticate_admin!
 
   def index
-    @shifts = Shift.eager_load(:employee, :absence).where(status: ["approved", "unapproved"])
+    @shifts = Shift.eager_load(:employee, :absence).where(absence: {status: ["unapproved", "rejected"]}, status: ["approved", "unapproved"]).or(Shift.where(absence: {id: nil}, status: ["approved", "unapproved"]))
   end
 
   def show
