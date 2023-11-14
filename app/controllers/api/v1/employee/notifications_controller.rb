@@ -8,15 +8,9 @@ class Api::V1::Employee::NotificationsController < ApplicationController
     @notifications = notifications.by_recently_created.page(params[:page])
   end
 
-  # def update
-  #   notification = Notification.find_by(id: params[:id])
-  #   notification.update_attribute(:read, true) if notification.read == false
-  #   if notification.shift_id.present?
-  #     redirect_to employee_shift_path(notification.shift_id)
-  #   elsif notification.absence_id.present?
-  #     redirect_to employee_absence_path(notification.absence_id)
-  #   else
-  #     redirect_to new_employee_shift_path
-  #   end
-  # end
+  def update
+    notification = Notification.find(params[:id])
+    notification.update!(read: true) if notification.read == false
+    render status: 204, json: "success"
+  end
 end
