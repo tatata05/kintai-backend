@@ -1,6 +1,6 @@
 class Api::V1::Employee::AbsencesController < ApplicationController
   # before_action :authenticate_employee!
-  # before_action :correct_employee, only: [:show, :destroy]
+  before_action :correct_employee, only: [:show, :destroy]
 
   def new
     @absence = Absence.new
@@ -19,8 +19,8 @@ class Api::V1::Employee::AbsencesController < ApplicationController
     render status: 400, json: e.message
   end
 
-  # def show
-  # end
+  def show
+  end
 
   # def destroy
   #   @absence.destroy
@@ -34,14 +34,12 @@ class Api::V1::Employee::AbsencesController < ApplicationController
     params.require(:absence).permit(:shift_id)
   end
 
-  # def correct_employee
-  #   @absence = Absence.find_by(id: params[:id])
-  #   # showでも使用するため、@absenceがnilの場合の処理を先に記載
-  #   return if @absence.blank?
+  def correct_employee
+    @absence = Absence.find(params[:id])
 
-  #   return if @absence.shift.employee_id == current_employee.id
+    return if @absence.shift.employee_id == current_employee.id
 
-  #   flash[:danger] = "権限がありません"
-  #   redirect_to employee_shifts_path
-  # end
+    # エラーハンドリング適切にする
+    render status: 403, json: "権限がありません"
+  end
 end
