@@ -9,41 +9,38 @@ class Api::V1::Employee::ShiftsController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @shift = current_employee.shifts.build(shift_params)
-      notification = Notification.find_by(employee_id: current_employee.id, kind: "unapplied")
 
+      # シフト申請が、同じ従業員・時間の時は処理を終了。
+      if overlapping_time?
+        return render status: 400, json: { errorCode: "BadRequest", message: ["その時間帯はすでにシフトを申請しています。"] }
+      end
+
+      notification = Notification.find_by(employee_id: current_employee.id, kind: "unapplied")
       #シフト未申請通知があった場合に、シフトを申請したらその通知を削除する
       notification.destroy! if notification.present?
-
-      # 同じ従業員から同じ時間でのシフト申請が行われた時は、例外を発生させる。
-      if overlapping_time?
-        raise StandardError.new("その時間帯はすでにシフトを申請しています")
-      end
 
       @shift.save!
       Notification.create!(employee_id: current_employee.id, shift_id: @shift.id, kind: "application")
     end
     render status: 201, json: "success"
-  rescue => e
-    # エラーハンドリングをうまくできれば、ここでのrescueは必要ないかも
-    render status: 400, json: e.message
+  rescue
+    raise BadRequest
   end
 
   def show
   end
 
-  # def update
-  #   @shift.assign_attributes(shift_params)
-  #   if overlapping_time?
-  #     flash.now[:danger] = "その時間帯はすでにシフトを申請しています"
-  #     render "edit"
-  #   elsif @shift.save
-  #     flash[:success] = "更新しました"
-  #     redirect_to employee_shift_path
-  #   else
-  #     flash.now[:danger] = "更新に失敗しました"
-  #     render "edit"
-  #   end
-  # end
+  def update
+    binding.pry
+    @shift.assign_attributes(shift_params)
+    # シフト申請が、同じ従業員・時間の時は処理を終了。
+    if overlapping_time?
+      return render status: 400, json: { errorCode: "BadRequest", message: ["その時間帯はすでにシフトを申請しています。"] }
+    end
+
+    @shift.save!
+    render status: 204, json: "success"
+  end
 
   # def destroy
   #   @shift.destroy
@@ -54,15 +51,14 @@ class Api::V1::Employee::ShiftsController < ApplicationController
   private
 
   def shift_params
-    params.require(:shift).permit(:start_time, :end_time, :status)
+    params.require(:shift).permit(:start_time, :end_time)
   end
 
   def correct_employee
     @shift = Shift.find(params[:id])
     return if @shift.employee_id == current_employee.id
 
-    # エラーハンドリング適切にする
-    render status: 403, json: "権限がありません"
+    raise ActiveRecord::RecordNotFound
   end
 
   def overlapping_time?
