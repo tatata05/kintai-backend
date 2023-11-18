@@ -1,0 +1,19 @@
+# Additional translations at https://github.com/heartcombo/devise/wiki/I18n
+
+en:
+  devise:
+    failure:
+      already_authenticated: "すでにログインしています。"
+      invalid: "emailもしくはpasswordが正しくありません。"
+      not_found_in_database: "emailもしくはpasswordが正しくありません。"
+      unauthenticated: "ログインしてください。"
+    registrations:
+      signed_up: "アカウントを作成しました。"
+      updated: "アカウントを更新しました。"
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "ログアウトしました。"
+  errors:
+    messages:
+      not_found: "対象データが存在しません。"

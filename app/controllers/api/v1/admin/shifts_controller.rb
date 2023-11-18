@@ -1,5 +1,5 @@
 class Api::V1::Admin::ShiftsController < ApplicationController
-  # before_action :authenticate_admin!
+  before_action :authenticate_admin!
 
   def index
     @shifts = Shift.eager_load(:employee, :absence).where(status: ["approved", "unapproved"])
@@ -21,6 +21,8 @@ class Api::V1::Admin::ShiftsController < ApplicationController
       end
     end
     render status: 204, json: "success"
+  rescue
+    raise BadRequest
   end
 
   private

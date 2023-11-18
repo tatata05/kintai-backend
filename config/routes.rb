@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         resources :absences, only: %i[show update]
         resources :admins, only: %i[index show] do
           collection do
-            get :current_admin
+            get :profile
           end
         end
         resources :employees, only: %i[index show]

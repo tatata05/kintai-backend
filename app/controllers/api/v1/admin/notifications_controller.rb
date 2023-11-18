@@ -1,5 +1,5 @@
 class Api::V1::Admin::NotificationsController < ApplicationController
-  # before_action :authenticate_admin!
+  before_action :authenticate_admin!
 
   def index
     notifications = Notification.where(kind: ["application", "approval_pending", "unapplied"])

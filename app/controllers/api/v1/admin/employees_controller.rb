@@ -1,5 +1,5 @@
 class Api::V1::Admin::EmployeesController < ApplicationController
-  # before_action :authenticate_admin!
+  before_action :authenticate_admin!
 
   def index
     @employees = Employee.all.page(params[:page])
