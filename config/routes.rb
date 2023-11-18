@@ -12,10 +12,14 @@ Rails.application.routes.draw do
         resources :absences, only: %i[show update]
         resources :admins, only: %i[index show] do
           collection do
-            get :current_admin
+            get :profile
           end
         end
-        resources :employees, only: %i[index show]
+        resources :employees, only: %i[index show] do
+          collection do
+            get :unapplied_employees
+          end
+        end
         resources :notifications, only: %i[index update]
         resources :shifts, only: %i[index show update]
       end

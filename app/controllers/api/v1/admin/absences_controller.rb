@@ -1,5 +1,5 @@
 class Api::V1::Admin::AbsencesController < ApplicationController
-  # before_action :authenticate_admin!
+  before_action :authenticate_admin!
 
   def show
     @absence = Absence.find(params[:id])
@@ -17,8 +17,8 @@ class Api::V1::Admin::AbsencesController < ApplicationController
       end
     end
     render status: 204, json: "success"
-  rescue => e
-    render status: 400, json: e.message
+  rescue
+    raise BadRequest
   end
 
   private

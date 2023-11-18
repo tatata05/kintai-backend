@@ -28,6 +28,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'jb'
 gem "devise"
 gem "devise_token_auth"
+gem 'rails-i18n'
+gem 'devise-i18n-views'
 gem 'rails-erd'
 gem 'kaminari'
 
