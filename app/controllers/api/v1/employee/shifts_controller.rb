@@ -31,7 +31,6 @@ class Api::V1::Employee::ShiftsController < ApplicationController
   end
 
   def update
-    binding.pry
     @shift.assign_attributes(shift_params)
     # シフト申請が、同じ従業員・時間の時は処理を終了。
     if overlapping_time?
