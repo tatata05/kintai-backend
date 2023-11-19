@@ -33,7 +33,7 @@ Rails.application.routes.draw do
           end
         end
         resources :notifications, only: %i[index update]
-        resources :shifts, only: %i[index create show update]
+        resources :shifts, only: %i[index create show update destroy]
       end
     end
   end

@@ -41,11 +41,9 @@ class Api::V1::Employee::ShiftsController < ApplicationController
     render status: 204, json: "success"
   end
 
-  # def destroy
-  #   @shift.destroy
-  #   flash[:success] = "シフト申請を削除しました"
-  #   redirect_to employee_shifts_path
-  # end
+  def destroy
+    @shift.destroy!
+  end
 
   private
 
