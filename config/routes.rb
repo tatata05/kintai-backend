@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     registrations: "api/v1/admin_auth/registrations"
   }
   
-  mount_devise_token_auth_for 'Employee', at: 'api/v1/employee_auth'
+  mount_devise_token_auth_for 'Employee', at: 'api/v1/employee_auth', controllers: {
+    registrations: "api/v1/employee_auth/registrations"
+  }
 
   namespace :api, defaults: {format: "json"} do
     namespace :v1 do
@@ -15,7 +17,7 @@ Rails.application.routes.draw do
             get :profile
           end
         end
-        resources :employees, only: %i[index show] do
+        resources :employees, only: %i[index show destroy] do
           collection do
             get :unapplied_employees
           end
