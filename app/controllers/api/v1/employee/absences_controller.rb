@@ -1,5 +1,5 @@
 class Api::V1::Employee::AbsencesController < ApplicationController
-  # before_action :authenticate_employee!
+  before_action :authenticate_employee!
   before_action :correct_employee, only: [:show, :destroy]
 
   def new
@@ -14,9 +14,8 @@ class Api::V1::Employee::AbsencesController < ApplicationController
       Notification.create!(employee_id: current_employee.id, absence_id: @absence.id, kind: "application")
     end
     render status: 204, json: "success"
-  rescue => e
-    # エラーハンドリングをうまくできれば、ここでのrescueは必要ないかも
-    render status: 400, json: e.message
+  rescue
+    raise BadRequest
   end
 
   def show
@@ -34,10 +33,8 @@ class Api::V1::Employee::AbsencesController < ApplicationController
 
   def correct_employee
     @absence = Absence.find(params[:id])
-
     return if @absence.shift.employee_id == current_employee.id
 
-    # エラーハンドリング適切にする
-    render status: 403, json: "権限がありません"
+    raise ActiveRecord::RecordNotFound
   end
 end
