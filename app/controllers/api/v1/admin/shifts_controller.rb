@@ -21,8 +21,6 @@ class Api::V1::Admin::ShiftsController < ApplicationController
       end
     end
     render status: 204, json: "success"
-  rescue
-    raise BadRequest
   end
 
   private
