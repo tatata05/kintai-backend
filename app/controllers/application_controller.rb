@@ -1,19 +1,18 @@
 class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
 
-  class BadRequest < ActionController::ActionControllerError; end
   class Forbidden < ActionController::ActionControllerError; end
 
   rescue_from StandardError, with: :render_500
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from Forbidden, with: :render_403
-  rescue_from BadRequest, with: :render_400
+  rescue_from ActionController::ParameterMissing, with: :render_400
 
   def show
     raise env['action_dispatch.exception']
   end
 
-  def render_400(err)
+  def render_400
     render status: 400, json: { errorCode: "BadRequest", message: ["不正な入力値です。"] }
   end
 
