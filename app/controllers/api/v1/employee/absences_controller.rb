@@ -14,8 +14,6 @@ class Api::V1::Employee::AbsencesController < ApplicationController
       Notification.create!(employee_id: current_employee.id, absence_id: @absence.id, kind: "application")
     end
     render status: 204, json: "success"
-  rescue
-    raise BadRequest
   end
 
   def show

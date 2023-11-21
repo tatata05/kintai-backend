@@ -23,8 +23,6 @@ class Api::V1::Employee::ShiftsController < ApplicationController
       Notification.create!(employee_id: current_employee.id, shift_id: @shift.id, kind: "application")
     end
     render status: 201, json: "success"
-  rescue
-    raise BadRequest
   end
 
   def show
