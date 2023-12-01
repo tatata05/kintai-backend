@@ -1,0 +1,10 @@
+json = {}
+
+json[:data] = @unapplied_employees_by_notifications.map do |employee_by_notifications|
+  {
+    id: employee_by_notifications.employee.id,
+    name: employee_by_notifications.employee.name,
+  }
+end
+
+json

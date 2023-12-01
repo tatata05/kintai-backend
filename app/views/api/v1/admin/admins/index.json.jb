@@ -1,0 +1,17 @@
+json = {
+  pagenation: {
+    current: @admins.current_page,
+    pages: @admins.total_pages,
+    totalCount: @admins.total_count,
+  }
+}
+
+json[:data] = @admins.map do |admin|
+  {
+    id: admin.id,
+    name: admin.name,
+    email: admin.email,
+  }
+end
+
+json

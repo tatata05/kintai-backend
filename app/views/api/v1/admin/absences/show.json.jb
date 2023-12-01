@@ -1,0 +1,10 @@
+json = {
+  data: {
+  id: @absence.id,
+  status: @absence.status,
+  startTime: @absence.shift.start_time,
+  endTime: @absence.shift.end_time,
+  }
+}
+
+json

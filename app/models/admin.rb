@@ -7,6 +7,5 @@ class Admin < ApplicationRecord
           :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  # deviseでpassword_confimationが適切に動かないため、deviseに依存しない。
-  validates :password, confirmation: true
+  validates :name, presence: true
 end
