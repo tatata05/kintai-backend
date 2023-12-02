@@ -20,12 +20,4 @@ class Shift < ApplicationRecord
       return status
     end
   end
-
-  def formalized_start_time
-    start_time.strftime('%Y/%m/%d %H:%M')
-  end
-
-  def formalized_end_time
-    end_time.strftime('%Y/%m/%d %H:%M')
-  end
 end

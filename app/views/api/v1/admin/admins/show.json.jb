@@ -1,8 +1,8 @@
 json = {
   data: {
-    id: @admin.id,
-    name: @admin.name,
-    email: @admin.email,
+  id: @admin.id,
+  name: @admin.name,
+  email: @admin.email,
   }
 }
 
