@@ -1,0 +1,8 @@
+json = {
+  data: {
+    id: @profile.id,
+    name: @profile.name,
+  }
+}
+
+json

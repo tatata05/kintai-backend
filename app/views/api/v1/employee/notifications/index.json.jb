@@ -1,0 +1,20 @@
+json = {
+  pagenation: {
+    current: @notifications.current_page,
+    pages: @notifications.total_pages,
+    totalCount: @notifications.total_count,
+  }
+}
+
+json[:data] = @notifications.map do |notification|
+  {
+    id: notification.id,
+    read: notification.read,
+    kind: notification.check_kind,
+    itemId: notification.check_item_id,
+    status: notification.kind,
+    shiftTime: notification.shift_time,
+  }
+end
+
+json
