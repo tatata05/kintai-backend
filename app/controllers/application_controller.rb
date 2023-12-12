@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
+  include ActionController::Cookies
 
   class Forbidden < ActionController::ActionControllerError; end
 
@@ -7,6 +8,8 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from Forbidden, with: :render_403
   rescue_from ActionController::ParameterMissing, with: :render_400
+
+  before_action :add_token_to_header
 
   def show
     raise env['action_dispatch.exception']
@@ -26,5 +29,14 @@ class ApplicationController < ActionController::API
 
   def render_500
     render status: 500, json: { errorCode: "InternalServerError", message: ["サーバーエラー"] }
+  end
+
+  def add_token_to_header
+    # クライアント側から送られてきたcookiesに入っている認証情報を、cookiesからheadersに入れる。
+    return if cookies['access-token'].nil? && cookies['client'].nil? && cookies['uid'].nil?
+
+    request.headers['access-token'] = cookies['access-token']
+    request.headers['client'] = cookies['client']
+    request.headers['uid'] = cookies['uid']
   end
 end
